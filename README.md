@@ -9,7 +9,8 @@
 单个免费/低频 key 在并发请求下容易触发分钟级 TPM 限流（429）。本网关把 N 个 key 注册为同一模型名的 N 个 deployment：
 
 - 负载均衡轮询，各 key 分摊 TPM 配额
-- 某 key 429 → 冷却 60s → 自动切下一个 → 单请求最多重试 20 次
+- 某 key 429 → 冷却 60s → 自动切下一个 → 单请求最多重试 8 次
+- 并发摊平：同时最多 3 个请求在飞，其余排队（宁慢勿挂，防瞬时打爆所有 key）
 - 单请求最长等 300s（5 分钟）：宁慢勿挂
 - 响应原样透传（含 reasoning 字段）
 
@@ -40,7 +41,7 @@ model_list:
   # 复制以上段，改 KEY 编号，即可加 key
 ```
 
-重试参数在 `router_settings`（`num_retries` / `timeout` / `cooldown_time`）。
+重试参数在 `router_settings`（`num_retries` / `timeout` / `cooldown_time` / `retry_after` / `max_parallel_requests`）。
 
 ### 3. 启动
 

@@ -48,7 +48,8 @@ model_list:
       api_key: os.environ/SENSENOVA_KEY9
 
 router_settings:
-  num_retries: 20        # 429 死磕：单请求最多重试 20 次
-  timeout: 300           # Q4 定案：单请求最长等 5 分钟
-  cooldown_time: 60      # 429 后该 key 冷却 60s，切下一个
-  retry_after: 30        # 429 重试间隔
+  num_retries: 8          # 429 重试上限（20 太高，失败重试会滚雪球放大压力）
+  timeout: 300            # Q4 定案：单请求最长等 5 分钟
+  cooldown_time: 60       # 429 后该 key 冷却 60s，切下一个
+  retry_after: 60         # 429 重试间隔加大，给商汤窗口恢复时间
+  max_parallel_requests: 3  # 并发摊平：同时最多 3 个请求在飞，其余排队（宁慢勿挂）
