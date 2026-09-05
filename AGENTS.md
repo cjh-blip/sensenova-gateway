@@ -19,6 +19,6 @@ LiteLLM（独立 venv `.venv\`，勿污染系统 Python）；OpenAI 兼容转发
 - `README.md`：权威文档（快速开始/接入/排障/合规）
 
 ## 当前状态
-- 9 key 均衡（SENSENOVA_KEY1-9），429 自动切换 + reasoning 透传
-- 唯一注册模型：`deepseek-v4-flash`（其他模型名会 404）
-- 本地运维细节见 LOCAL.md（计划任务名、key 登记表，已 gitignore 不发布）
+- 多 key 均衡 + 429 自动切换 + reasoning 透传（本机 9 key 实测）
+- 唯一注册模型：`deepseek-v4-flash`（其他模型名会 404；按需在 config 加）
+- 本机运维细节（计划任务名、key 登记表路径）记录在本地 gitignore 排除的文件中，不入仓库
