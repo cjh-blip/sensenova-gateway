@@ -1,4 +1,5 @@
 .venv/
 *.log
 LOCAL.md
+run-hidden.vbs
 __pycache__/
