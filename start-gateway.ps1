@@ -13,6 +13,12 @@ $cfg = Join-Path $dir "config.yaml"
 $env:SENSENOVA_KEY1 = [Environment]::GetEnvironmentVariable("SENSENOVA_KEY1", "User")
 $env:SENSENOVA_KEY2 = [Environment]::GetEnvironmentVariable("SENSENOVA_KEY2", "User")
 $env:SENSENOVA_KEY3 = [Environment]::GetEnvironmentVariable("SENSENOVA_KEY3", "User")
+# KEY4-20 循环注入（扩容后曾漏掉导致 deployment 未加载）
+foreach ($i in 4..20) {
+  $name = "SENSENOVA_KEY$i"
+  $val = [Environment]::GetEnvironmentVariable($name, "User")
+  if ($val) { Set-Item -Path "Env:$name" -Value $val }
+}
 
 $proc = Get-Process litellm -ErrorAction SilentlyContinue
 $listening = Get-NetTCPConnection -LocalPort 4000 -State Listen -ErrorAction SilentlyContinue
