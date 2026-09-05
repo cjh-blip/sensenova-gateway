@@ -1,6 +1,8 @@
 model_list:
-  # 多 key 负载均衡：同一 model_name 下多个 deployment，429 自动冷却切换。
-  # 增减 key：复制一段，改 api_key 环境变量名（如 SENSENOVA_KEY4），并在用户环境变量里设好。
+  # Multi-key load balancing: same model_name, multiple deployments.
+  # On 429, LiteLLM cools the failed key and retries the next one.
+  # Add a key: copy one block, change the env var name (e.g. SENSENOVA_KEY4),
+  # and make sure the env var exists in the user environment.
   - model_name: deepseek-v4-flash
     litellm_params:
       model: openai/deepseek-v4-flash
@@ -48,8 +50,8 @@ model_list:
       api_key: os.environ/SENSENOVA_KEY9
 
 router_settings:
-  num_retries: 8          # 429 重试上限（20 太高，失败重试会滚雪球放大压力）
-  timeout: 300            # Q4 定案：单请求最长等 5 分钟
-  cooldown_time: 60       # 429 后该 key 冷却 60s，切下一个
-  retry_after: 60         # 429 重试间隔加大，给商汤窗口恢复时间
-  default_max_parallel_requests: 3  # 每 key 同时最多 3 个请求（多 key=多通道，分钟容量乘积；dsh 组对话需 ≥3 通道）
+  num_retries: 8          # max retries per request before giving up
+  timeout: 300            # max seconds per request (5 min: slow-but-stable)
+  cooldown_time: 60       # seconds a key cools down after a 429
+  retry_after: 60         # seconds to wait before retrying after a 429
+  default_max_parallel_requests: 3  # per-key concurrent requests (multi-key = multi-channel)
