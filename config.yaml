@@ -52,4 +52,4 @@ router_settings:
   timeout: 300            # Q4 定案：单请求最长等 5 分钟
   cooldown_time: 60       # 429 后该 key 冷却 60s，切下一个
   retry_after: 60         # 429 重试间隔加大，给商汤窗口恢复时间
-  max_parallel_requests: 3  # 并发摊平：同时最多 3 个请求在飞，其余排队（宁慢勿挂）
+  default_max_parallel_requests: 3  # 每 key 同时最多 3 个请求（多 key=多通道，分钟容量乘积；dsh 组对话需 ≥3 通道）

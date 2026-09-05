@@ -41,7 +41,7 @@ model_list:
   # 复制以上段，改 KEY 编号，即可加 key
 ```
 
-重试参数在 `router_settings`（`num_retries` / `timeout` / `cooldown_time` / `retry_after` / `max_parallel_requests`）。
+重试参数在 `router_settings`（`num_retries` / `timeout` / `cooldown_time` / `retry_after` / `default_max_parallel_requests`）。
 
 ### 3. 启动
 
